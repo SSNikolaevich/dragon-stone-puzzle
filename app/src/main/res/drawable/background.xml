@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <bitmap
+            android:tileMode="repeat"
+            android:src="@mipmap/ic_launcher">
+        </bitmap>
+    </item>
+    <item>
+        <shape>
+            <gradient
+                android:type="radial"
+                android:gradientRadius="@dimen/background_gradient_radius"
+                android:endColor="#FF000000"
+                android:startColor="#00000000"
+            />
+        </shape>
+    </item>
+</layer-list>

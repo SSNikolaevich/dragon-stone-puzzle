@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Dragon Stone Puzzle</string>
+
+    <string name="share">Share</string>
+    <string name="share_via">Share via</string>
+    <string name="share_msg_subject">New interesting puzzle game for Android</string>
+    <string name="share_msg_text">New interesting puzzle game for Android
+        http://play.google.com/store/apps/details?id=com.github.ssnikolaevich.dragonstonepuzzle</string>
+
+    <string name="no_play_store_installed">No Play Store installed on device</string>
+
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+</resources>
