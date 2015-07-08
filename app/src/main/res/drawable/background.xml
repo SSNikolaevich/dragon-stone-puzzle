@@ -3,6 +3,12 @@
     <item>
         <bitmap
             android:tileMode="repeat"
+            android:src="@mipmap/dragon_scale_bg">
+        </bitmap>
+    </item>
+    <item>
+        <bitmap
+            android:tileMode="repeat"
             android:src="@mipmap/ic_launcher">
         </bitmap>
     </item>
