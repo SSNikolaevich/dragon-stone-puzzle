@@ -28,7 +28,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:src="@mipmap/ic_launcher"
+        android:src="@mipmap/share"
         android:clickable="true"
         android:onClick="onShare" />
 
