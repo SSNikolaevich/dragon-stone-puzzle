@@ -17,7 +17,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_game);
+        setContentView(R.layout.activity_main);
 
         init();
         initAds();
@@ -65,5 +65,11 @@ public class MainActivity extends Activity {
         sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, msgSubject);
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, msgText);
         startActivity(Intent.createChooser(sharingIntent, shareCaption));
+    }
+
+    public void onStart(View view) {
+        Intent intent = new Intent(this, LevelSelectionActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(intent);
     }
 }
