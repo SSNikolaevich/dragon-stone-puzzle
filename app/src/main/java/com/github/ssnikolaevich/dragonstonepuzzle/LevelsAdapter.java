@@ -37,11 +37,9 @@ public class LevelsAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view;
         if (convertView == null) {
-            view = inflater.inflate(R.layout.levels_grid_item, null);
+            view = LayoutInflater.from(context).inflate(R.layout.levels_grid_item, null);
         } else {
             view = convertView;
         }
