@@ -55,7 +55,7 @@ public class LevelSelectionActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         final boolean wasAlreadySolved = levelStateManager.isSolved(requestCode);
-        final boolean isSolved = wasAlreadySolved || (resultCode != 0);
+        final boolean isSolved = wasAlreadySolved || (resultCode == RESULT_OK);
         levelStateManager.setSolved(requestCode, isSolved);
         if (isSolved && (!wasAlreadySolved)) {
             levelsGrid.invalidateViews();
