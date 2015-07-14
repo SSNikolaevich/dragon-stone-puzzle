@@ -41,6 +41,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.github.ssnikolaevich.dragonstonepuzzle.MainActivity" />
         </activity>
+        <activity
+            android:name=".GameActivity"
+            android:label="@string/title_activity_game"
+            android:parentActivityName=".LevelSelectionActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.github.ssnikolaevich.dragonstonepuzzle.LevelSelectionActivity" />
+        </activity>
     </application>
 
 </manifest>

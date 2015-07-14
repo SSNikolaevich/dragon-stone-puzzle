@@ -1,6 +1,7 @@
 package com.github.ssnikolaevich.dragonstonepuzzle;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -24,8 +25,11 @@ import javax.xml.parsers.ParserConfigurationException;
 
 
 public class LevelSelectionActivity extends Activity {
+    public final static String LEVEL_NAME = "com.github.ssnikolaevich.dragonstonepuzzle.LEVEL";
+
     private ArrayList<String> levels;
     private LevelStateManager levelStateManager;
+    private GridView levelsGrid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +42,7 @@ public class LevelSelectionActivity extends Activity {
         }
         levelStateManager = new LevelStateManager(levels.size());
         LevelsAdapter adapter = new LevelsAdapter(this, levelStateManager);
-        GridView levelsGrid = (GridView)findViewById(R.id.levelsGrid);
+        levelsGrid = (GridView)findViewById(R.id.levelsGrid);
         levelsGrid.setAdapter(adapter);
         levelsGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -46,6 +50,16 @@ public class LevelSelectionActivity extends Activity {
                 startGame(position);
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        final boolean wasAlreadySolved = levelStateManager.isSolved(requestCode);
+        final boolean isSolved = wasAlreadySolved || (resultCode != 0);
+        levelStateManager.setSolved(requestCode, isSolved);
+        if (isSolved && (!wasAlreadySolved)) {
+            levelsGrid.invalidateViews();
+        }
     }
 
     private ArrayList<String> loadLevelsList() throws
@@ -61,6 +75,12 @@ public class LevelSelectionActivity extends Activity {
 
     private void startGame(int levelNumber) {
         Log.d(this.getClass().getName(), "Start game level \""
-                + levels.get(levelNumber) + "\" (" + levelNumber + ")" );
+                + levels.get(levelNumber) + "\" (" + levelNumber + ")");
+        if (!levelStateManager.isLocked(levelNumber)) {
+            Intent intent = new Intent(this, GameActivity.class);
+            intent.putExtra(LEVEL_NAME, levels.get(levelNumber));
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            startActivityForResult(intent, levelNumber);
+        }
     }
 }
