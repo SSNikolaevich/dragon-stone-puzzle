@@ -44,7 +44,7 @@ public class LevelsAdapter extends BaseAdapter {
             view = convertView;
         }
         TextView levelNumber = (TextView)view.findViewById(R.id.levelNumber);
-        levelNumber.setText("" + position);
+        levelNumber.setText("" + (position + 1));
         return view;
     }
 }
