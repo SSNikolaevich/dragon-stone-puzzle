@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <ImageView
+    <RelativeLayout
         android:layout_width="@dimen/level_tile_size"
         android:layout_height="@dimen/level_tile_size"
-        android:id="@+id/background"
+        android:layout_margin="@dimen/level_tile_margin"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:src="@mipmap/level_unlocked_tile_bg" />
+        android:background="@mipmap/level_unlocked_tile_bg">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:id="@+id/levelNumber"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:id="@+id/levelNumber"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
 </RelativeLayout>
