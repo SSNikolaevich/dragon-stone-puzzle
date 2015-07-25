@@ -26,6 +26,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 public class LevelSelectionActivity extends Activity {
     public final static String LEVEL_NAME = "com.github.ssnikolaevich.dragonstonepuzzle.LEVEL";
+    public final static int UNLOCKED_LEVELS_LIMIT = 4;
 
     private ArrayList<String> levels;
     private LevelStateManager levelStateManager;
@@ -41,6 +42,7 @@ public class LevelSelectionActivity extends Activity {
             Log.e(this.getClass().getName(), ex.getMessage());
         }
         levelStateManager = new LevelStateManager(levels.size());
+        levelStateManager.setUnlockedLevelsLimit(UNLOCKED_LEVELS_LIMIT);
         LevelsAdapter adapter = new LevelsAdapter(this, levelStateManager);
         levelsGrid = (GridView)findViewById(R.id.levelsGrid);
         levelsGrid.setAdapter(adapter);
