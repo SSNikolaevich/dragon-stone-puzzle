@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -50,9 +51,18 @@ public class LevelsAdapter extends BaseAdapter {
         } else {
             view = convertView;
         }
+
+        final boolean levelIsLocked = levels.isLocked(position);
+
         RelativeLayout tileLayout = (RelativeLayout)view.findViewById(R.id.levelTileLayout);
-        Drawable bg = levels.isLocked(position)? lockedTileBackground : unlockedTileBackground;
+        Drawable bg = levelIsLocked? lockedTileBackground : unlockedTileBackground;
         tileLayout.setBackground(bg);
+
+        ImageView levelStateView = (ImageView) view.findViewById(R.id.levelTileStateImage);
+        final int levelStateImageId = levelIsLocked?
+                R.mipmap.lock : (levels.isSolved(position)? R.mipmap.ic_launcher /* FIXME */: 0);
+        levelStateView.setImageResource(levelStateImageId);
+
         TextView levelNumber = (TextView)view.findViewById(R.id.levelNumber);
         levelNumber.setText("" + (position + 1));
         return view;
