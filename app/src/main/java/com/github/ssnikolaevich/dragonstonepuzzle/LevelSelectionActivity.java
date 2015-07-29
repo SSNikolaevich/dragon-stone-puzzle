@@ -1,7 +1,9 @@
 package com.github.ssnikolaevich.dragonstonepuzzle;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -28,28 +30,38 @@ public class LevelSelectionActivity extends Activity {
     public final static String LEVEL_NAME = "com.github.ssnikolaevich.dragonstonepuzzle.LEVEL";
     public final static int UNLOCKED_LEVELS_LIMIT = 4;
 
+    public final static String LEVEL_SELECTION_ACTIVITY_PREFERENCES = "level_selection_activity_preferences";
+    public final static String LEVELS_STATE="levels_state";
+
     private ArrayList<String> levels;
     private LevelStateManager levelStateManager;
     private GridView levelsGrid;
+    private SharedPreferences settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_level_selection);
+
+        settings = getSharedPreferences(LEVEL_SELECTION_ACTIVITY_PREFERENCES, Context.MODE_PRIVATE);
+
         try {
             levels = loadLevelsList();
         } catch (IOException | ParserConfigurationException | SAXException ex) {
             Log.e(this.getClass().getName(), ex.getMessage());
         }
+
         levelStateManager = new LevelStateManager(levels.size());
         levelStateManager.setUnlockedLevelsLimit(UNLOCKED_LEVELS_LIMIT);
+        loadLevelsState();
+
         LevelsAdapter adapter = new LevelsAdapter(this, levelStateManager);
         levelsGrid = (GridView)findViewById(R.id.levelsGrid);
         levelsGrid.setAdapter(adapter);
         levelsGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                startGame(position);
+                onClickLevelTile(position);
             }
         });
     }
@@ -60,6 +72,7 @@ public class LevelSelectionActivity extends Activity {
         final boolean isSolved = wasAlreadySolved || (resultCode == RESULT_OK);
         levelStateManager.setSolved(requestCode, isSolved);
         if (isSolved && (!wasAlreadySolved)) {
+            saveLevelsState();
             levelsGrid.invalidateViews();
         }
     }
@@ -75,14 +88,48 @@ public class LevelSelectionActivity extends Activity {
         return LevelListLoader.load(element);
     }
 
+    private void onClickLevelTile(int levelNumber) {
+        Log.d(this.getClass().getName(), "Select game level \""
+                + levels.get(levelNumber) + "\" (" + levelNumber + ")");
+        if (!levelStateManager.isLocked(levelNumber)) {
+            startGame(levelNumber);
+        }
+    }
+
     private void startGame(int levelNumber) {
         Log.d(this.getClass().getName(), "Start game level \""
                 + levels.get(levelNumber) + "\" (" + levelNumber + ")");
-        if (!levelStateManager.isLocked(levelNumber)) {
-            Intent intent = new Intent(this, GameActivity.class);
-            intent.putExtra(LEVEL_NAME, levels.get(levelNumber));
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-            startActivityForResult(intent, levelNumber);
+        Intent intent = new Intent(this, GameActivity.class);
+        intent.putExtra(LEVEL_NAME, levels.get(levelNumber));
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivityForResult(intent, levelNumber);
+    }
+
+    private void loadLevelsState() {
+        if (settings.contains(LEVELS_STATE)) {
+            String value = settings.getString(LEVELS_STATE, "");
+            setLevelsStateFromString(value);
+        }
+    }
+
+    private void saveLevelsState() {
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString(LEVELS_STATE, getLevelsStateAsString());
+        editor.apply();
+    }
+
+    private String getLevelsStateAsString() {
+        String s = "";
+        for (int i = 0; i < levelStateManager.getLevelsCount(); ++i) {
+            s += levelStateManager.isSolved(i)? '1' : '0';
+        }
+        return s;
+    }
+
+    private void setLevelsStateFromString(String value) {
+        final int limit = Math.min(levelStateManager.getLevelsCount(), value.length());
+        for (int i = 0; i < limit; ++i) {
+            levelStateManager.setSolved(i, value.charAt(i) == '1');
         }
     }
 }
