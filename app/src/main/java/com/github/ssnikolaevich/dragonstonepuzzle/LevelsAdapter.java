@@ -60,7 +60,7 @@ public class LevelsAdapter extends BaseAdapter {
 
         ImageView levelStateView = (ImageView) view.findViewById(R.id.levelTileStateImage);
         final int levelStateImageId = levelIsLocked?
-                R.mipmap.lock : (levels.isSolved(position)? R.mipmap.ic_launcher /* FIXME */: 0);
+                R.mipmap.lock : (levels.isSolved(position)? R.mipmap.level_state_solved : 0);
         levelStateView.setImageResource(levelStateImageId);
 
         TextView levelNumber = (TextView)view.findViewById(R.id.levelNumber);
