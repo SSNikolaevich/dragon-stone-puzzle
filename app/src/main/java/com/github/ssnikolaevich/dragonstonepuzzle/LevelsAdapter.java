@@ -1,7 +1,6 @@
 package com.github.ssnikolaevich.dragonstonepuzzle;
 
 import android.content.Context;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +11,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.github.ssnikolaevich.slidingpuzzle.LevelStateManager;
-
-import java.util.zip.Inflater;
 
 public class LevelsAdapter extends BaseAdapter {
     private Context context;
