@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<level columns="3" rows="3" gliph="oroboros">
+
+    <tile columns="1" rows="1" fixed="0">
+        <origin column="0" row="0"/>
+        <position column="0" row="1"/>
+    </tile>
+    <tile columns="1" rows="1" fixed="0">
+        <origin column="1" row="0"/>
+        <position column="0" row="0"/>
+    </tile>
+    <tile columns="1" rows="1" fixed="0">
+        <origin column="2" row="0"/>
+        <position column="1" row="0"/>
+    </tile>
+    <tile columns="1" rows="1" fixed="0">
+        <origin column="0" row="1"/>
+        <position column="0" row="2"/>
+    </tile>
+    <tile columns="1" rows="1" fixed="1">
+        <origin column="1" row="1"/>
+        <position column="1" row="1"/>
+    </tile>
+    <tile columns="1" rows="1" fixed="0">
+        <origin column="2" row="1"/>
+        <position column="2" row="0"/>
+    </tile>
+    <tile columns="1" rows="1" fixed="0">
+        <origin column="0" row="2"/>
+        <position column="1" row="2"/>
+    </tile>
+    <tile columns="1" rows="1" fixed="0">
+        <origin column="1" row="2"/>
+        <position column="2" row="2"/>
+    </tile>
+    <tile columns="1" rows="1" fixed="0">
+        <origin column="2" row="2"/>
+        <position column="2" row="1"/>
+    </tile>
+
+</level>
