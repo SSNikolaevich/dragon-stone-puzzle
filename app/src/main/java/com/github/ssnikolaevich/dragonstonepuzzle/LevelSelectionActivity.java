@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import com.github.ssnikolaevich.slidingpuzzle.LevelListLoader;
 import com.github.ssnikolaevich.slidingpuzzle.LevelStateManager;
@@ -48,6 +49,7 @@ public class LevelSelectionActivity extends Activity {
         try {
             levels = loadLevelsList();
         } catch (IOException | ParserConfigurationException | SAXException ex) {
+            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
             Log.e(this.getClass().getName(), ex.getMessage());
         }
 
