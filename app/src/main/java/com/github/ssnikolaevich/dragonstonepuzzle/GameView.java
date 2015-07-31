@@ -7,22 +7,32 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.support.v4.view.GestureDetectorCompat;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
+import com.github.ssnikolaevich.slidingpuzzle.Direction;
 import com.github.ssnikolaevich.slidingpuzzle.Game;
+import com.github.ssnikolaevich.slidingpuzzle.GameEvent;
+import com.github.ssnikolaevich.slidingpuzzle.GameListener;
 import com.github.ssnikolaevich.slidingpuzzle.Position;
 import com.github.ssnikolaevich.slidingpuzzle.Tile;
 
 
-public class GameView extends View {
+public class GameView extends View implements GestureDetector.OnGestureListener, GameListener {
+    private static final int SWIPE_DISTANCE_THRESHOLD = 100;
+    private static final int SWIPE_VELOCITY_THRESHOLD = 100;
+
     private Bitmap gliph;
     private Game game;
     private Paint paint;
     private Rect sourceRect;
     private Rect destinationRect;
+    private GestureDetectorCompat gestureDetector;
 
     public GameView(Context context) {
         super(context);
@@ -45,6 +55,7 @@ public class GameView extends View {
         sourceRect = new Rect();
         destinationRect = new Rect();
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        gestureDetector = new GestureDetectorCompat(getContext(), this);
     }
 
     @Override
@@ -64,6 +75,15 @@ public class GameView extends View {
         for (Tile tile : game.getTiles()) {
             drawTile(canvas, tile);
         }
+    }
+
+    private Position screenToGame(float x, float y) {
+        Position position = new Position();
+        if (game != null) {
+            position.setColumn((int)(x * game.getColumns() / getWidth()));
+            position.setRow((int)(y * game.getRows() / getHeight()));
+        }
+        return position;
     }
 
     private void drawTile(Canvas canvas, Tile tile) {
@@ -100,15 +120,18 @@ public class GameView extends View {
     }
 
     public void setGame(Game game) {
+        if (this.game != null) {
+            this.game.removeListener(this);
+        }
         this.game = game;
-        updateGliph();
+        gliph = null;
+        if (this.game != null) {
+            this.game.addListener(this);
+            updateGliph();
+        }
     }
 
     private void updateGliph() {
-        gliph = null;
-        if (game == null)
-            return;
-
         Resources resources = getResources();
         final String gliphName = game.getGliph();
         final String packageName = getContext().getPackageName();
@@ -120,5 +143,74 @@ public class GameView extends View {
         } else {
             gliph = BitmapFactory.decodeResource(resources, resourceId);
         }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event){
+        return gestureDetector.onTouchEvent(event) || super.onTouchEvent(event);
+    }
+
+    @Override
+    public boolean onDown(MotionEvent e) {
+        Log.d(this.getClass().getName(), "onDown: " + e.toString());
+        return true;
+
+    }
+
+    @Override
+    public void onShowPress(MotionEvent e) {
+        Log.d(this.getClass().getName(), "onShowPress: " + e.toString());
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent e) {
+        Log.d(this.getClass().getName(), "onSingleTapUp: " + e.toString());
+        return true;
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+        Log.d(this.getClass().getName(), "onScroll: " + e1.toString() + e2.toString());
+        return true;
+    }
+
+    @Override
+    public void onLongPress(MotionEvent e) {
+        Log.d(this.getClass().getName(), "onLongPress: " + e.toString());
+    }
+
+    @Override
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+        Log.d(this.getClass().getName(), "onFling: " + e1.toString() + e2.toString());
+        final float x = e1.getX();
+        final float y = e1.getY();
+        float distanceX = e2.getX() - x;
+        float distanceY = e2.getY() - y;
+        if (Math.abs(distanceX) > Math.abs(distanceY)) {
+            if ((Math.abs(distanceX) > SWIPE_DISTANCE_THRESHOLD)
+                    && (Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD)) {
+                onSwipe(x, y, (distanceX > 0)? Direction.RIGHT : Direction.LEFT);
+                return true;
+            }
+        } else {
+            if ((Math.abs(distanceY) > SWIPE_DISTANCE_THRESHOLD)
+                    && (Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD)) {
+                onSwipe(x, y, (distanceY > 0)? Direction.DOWN : Direction.UP);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void onSwipe(float x, float y, Direction direction) {
+        if ((game == null) || game.isOver())
+            return;
+        Position position = screenToGame(x, y);
+        game.makeMove(position.getColumn(), position.getRow(), direction);
+    }
+
+    @Override
+    public void handle(GameEvent gameEvent) {
+        postInvalidate();
     }
 }
