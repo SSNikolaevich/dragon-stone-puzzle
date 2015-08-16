@@ -45,34 +45,38 @@
         android:stretchColumns="1">
         <TableRow android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <ImageView android:src="@mipmap/ic_launcher"
+            <ImageView android:src="@mipmap/game_view_border_lt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"></ImageView>
-            <Space android:layout_width="match_parent"
-                android:layout_height="match_parent"></Space>
-            <ImageView android:src="@mipmap/ic_launcher"
+            <FrameLayout android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@mipmap/game_view_border_t"></FrameLayout>
+            <ImageView android:src="@mipmap/game_view_border_rt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"></ImageView>
         </TableRow>
         <TableRow android:layout_height="wrap_content"
             android:layout_width="wrap_content">
-            <Space android:layout_width="match_parent"
-                android:layout_height="match_parent"></Space>
+            <FrameLayout android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@mipmap/game_view_border_l"></FrameLayout>
             <com.github.ssnikolaevich.dragonstonepuzzle.GameView
                 android:id="@+id/gameView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
-            <Space android:layout_height="match_parent"
-                android:layout_width="match_parent"></Space>
+            <FrameLayout android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:background="@mipmap/game_view_border_r"></FrameLayout>
         </TableRow>
         <TableRow android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <ImageView android:src="@mipmap/ic_launcher"
+            <ImageView android:src="@mipmap/game_view_border_lb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"></ImageView>
-            <Space android:layout_width="match_parent"
-                android:layout_height="match_parent"></Space>
-            <ImageView android:src="@mipmap/ic_launcher"
+            <FrameLayout android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@mipmap/game_view_border_b"></FrameLayout>
+            <ImageView android:src="@mipmap/game_view_border_rb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"></ImageView>
         </TableRow>
